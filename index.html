@@ -2,68 +2,76 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🌹 for my Rakshya Maya · Valentine</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>🌹 for my Rakshya Maya · mobile valentine</title>
     <style>
+        /* MOBILE-FIRST DESIGN — tuned for iPhone 14 (390x844) and similar */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
-            background: linear-gradient(145deg, #fad0c4 0%, #ff9a9e 100%);
-            min-height: 100vh;
+            background: radial-gradient(circle at 30% 30%, #fcc9c2, #f8a5a5);
+            min-height: 100vh; /* fallback */
+            min-height: 100dvh; /* dynamic viewport for mobile */
             display: flex;
             align-items: center;
             justify-content: center;
             font-family: 'Dancing Script', 'Segoe Script', 'Brush Script MT', cursive, sans-serif;
-            overflow-x: hidden;
+            padding: 8px;
+            margin: 0;
             position: relative;
-            padding: 16px;
+            overflow-x: hidden;
+            touch-action: pan-y; /* prevent horizontal scroll */
         }
 
-        /* main card stage */
+        /* main card — soft, friendly, fits mobile screen */
         .stage {
-            width: min(680px, 98%);
-            background: rgba(255, 245, 240, 0.5);
-            backdrop-filter: blur(3px);
-            border-radius: 60px 60px 40px 40px;
-            box-shadow: 0 30px 40px rgba(180, 60, 80, 0.25);
-            padding: 30px 20px 50px 20px;
+            width: min(420px, 98%);
+            background: rgba(255, 240, 235, 0.7);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border-radius: 48px 48px 32px 32px;
+            box-shadow: 0 20px 30px rgba(160, 40, 60, 0.3);
+            padding: 20px 12px 32px 12px;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             position: relative;
             z-index: 15;
-            border: 2px solid rgba(255, 255, 255, 0.7);
+            border: 1.5px solid rgba(255, 255, 255, 0.8);
         }
 
-        /* envelope container */
+        /* envelope wrapper — scaled down slightly for smaller screen but still visible */
         .envelope-wrapper {
             position: relative;
-            width: 300px;
-            height: 220px;
-            margin: 10px auto 20px;
-            cursor: pointer;
-            transition: transform 0.2s ease;
+            width: 260px;
+            height: 190px;
+            margin: 8px auto 16px;
+            cursor: default; /* no click needed */
             z-index: 30;
+            transition: transform 0.2s ease;
+            /* iPhone friendly size */
         }
 
+        /* envelope body */
         .envelope {
             position: absolute;
             width: 100%;
             height: 100%;
             background: #f9a29f;
-            border-radius: 20px 20px 12px 12px;
-            box-shadow: 0 15px 20px rgba(190, 70, 70, 0.4);
-            border: 3px solid #d66868;
+            border-radius: 18px 18px 10px 10px;
+            box-shadow: 0 12px 18px rgba(170, 60, 60, 0.5);
+            border: 2px solid #d66868;
             overflow: hidden;
             z-index: 20;
         }
 
-        /* envelope flap (upper part) */
+        /* flap (upper part) */
         .flap {
             position: absolute;
             top: 0;
@@ -71,12 +79,12 @@
             width: 100%;
             height: 45%;
             background: #feb6b0;
-            border-radius: 18px 18px 60% 60%;
-            border-bottom: 3px solid #d66868;
+            border-radius: 16px 16px 60% 60%;
+            border-bottom: 2px solid #d66868;
             transform-origin: top;
-            transition: transform 0.8s cubic-bezier(0.42, 0.0, 0.28, 1.2);
+            transition: transform 0.8s cubic-bezier(0.4, 0.0, 0.2, 1.2);
             z-index: 35;
-            box-shadow: inset 0 10px 12px rgba(250, 230, 230, 0.8);
+            box-shadow: inset 0 6px 10px rgba(250, 220, 220, 0.8);
             backface-visibility: hidden;
         }
 
@@ -85,21 +93,21 @@
             pointer-events: none;
         }
 
-        /* heart on top of envelope (remains purely decorative) */
+        /* heart on top — slightly smaller */
         .heart-on-top {
             position: absolute;
-            top: -20px;
+            top: -16px;
             left: 50%;
             transform: translateX(-50%);
-            font-size: 64px;
-            filter: drop-shadow(0 12px 10px rgba(200, 40, 60, 0.4));
+            font-size: 52px;
+            filter: drop-shadow(0 10px 10px rgba(190, 30, 50, 0.5));
             z-index: 50;
-            animation: softGlow 1.8s infinite alternate;
+            animation: softGlow 2s infinite alternate ease-in-out;
             line-height: 1;
             pointer-events: none;
         }
 
-        /* --- NEW: countdown placed at center of envelope (visible on the body) --- */
+        /* COUNTDOWN on center of envelope — big enough for thumb, but not too big */
         .center-countdown {
             position: absolute;
             top: 50%;
@@ -112,20 +120,18 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 42px;
+            font-size: 44px;
             font-weight: bold;
             color: #b13e4b;
-            box-shadow: 0 0 0 5px white, 0 8px 20px crimson;
+            box-shadow: 0 0 0 5px white, 0 6px 18px rgba(180, 20, 20, 0.7);
             border: 3px solid #ffe6b0;
-            z-index: 60;  /* above envelope, below flap? we want it visible on envelope body */
+            z-index: 65;
             font-family: 'Courier New', monospace;
             transition: transform 0.2s, opacity 0.4s;
-            /* it sits on the envelope body, but flap covers it when closed? 
-               flap has z-index 35, but .center-countdown 60 is higher, so it appears on top of flap.
-               That's good: timer visible above flap. */
-            pointer-events: none; /* so clicks pass through to envelope if needed */
-            backdrop-filter: blur(1px);
+            pointer-events: none;
+            backdrop-filter: blur(2px);
             line-height: 1;
+            /* perfect circle on mobile */
         }
 
         /* flying roses container */
@@ -144,39 +150,38 @@
             position: absolute;
             font-size: 2.2rem;
             opacity: 0;
-            filter: drop-shadow(0 6px 10px hotpink);
-            animation: flyRose 8s linear forwards;
-            bottom: -10%;
+            filter: drop-shadow(0 4px 8px #ff4d6d);
+            animation: flyRose 7s linear forwards;
+            bottom: -8%;
             will-change: transform, opacity;
         }
 
-        /* letter inside envelope */
+        /* letter inside envelope — fits perfectly */
         .letter {
             position: absolute;
-            width: 86%;
+            width: 84%;
             height: 68%;
             background: #fffef8;
-            left: 7%;
+            left: 8%;
             top: 16%;
-            border-radius: 16px 16px 12px 12px;
-            padding: 14px 8px;
-            box-shadow: inset 0 0 0 1px #f1bfbf, 0 12px 18px rgba(120, 40, 40, 0.3);
+            border-radius: 16px 16px 10px 10px;
+            padding: 10px 4px;
+            box-shadow: inset 0 0 0 1px #f1bfbf, 0 10px 16px rgba(100, 30, 30, 0.3);
             display: flex;
             align-items: center;
             justify-content: center;
             text-align: center;
             z-index: 25;
-            font-size: 1.1rem;
+            font-size: 1rem;
             transform: scale(0.8) translateY(20px);
             opacity: 0;
-            transition: transform 0.8s ease 0.3s, opacity 0.6s ease 0.2s;
+            transition: transform 0.7s ease 0.3s, opacity 0.5s ease 0.2s;
             font-family: 'Dancing Script', 'Georgia', cursive;
             color: #a5314a;
             border: 2px solid #ffb6b6;
             transform-origin: bottom;
             line-height: 1.4;
             word-break: break-word;
-            backdrop-filter: blur(2px);
         }
 
         .letter.show {
@@ -185,96 +190,100 @@
         }
 
         .letter span {
-            background: rgba(255, 220, 220, 0.3);
-            padding: 6px 12px;
-            border-radius: 60px;
+            background: rgba(255, 235, 235, 0.9);
+            padding: 12px 10px;
+            border-radius: 40px 8px 40px 8px;
+            box-shadow: 0 2px 12px #f8aaaa;
+            font-size: 1.4rem;
             display: inline-block;
+            max-width: 95%;
         }
 
-        /* instruction / romantic footer */
+        /* romantic footer — readable on iPhone */
         .subtle {
-            color: #7d4050;
-            margin-top: 25px;
-            font-size: 1.2rem;
-            text-shadow: 2px 2px 0 rgba(255, 255, 255, 0.5);
-            font-weight: lighter;
-            background: #ffeae4b8;
+            color: #702f3f;
+            margin-top: 18px;
+            font-size: 1.3rem;
+            text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.6);
+            background: #ffeae4d9;
             padding: 8px 24px;
-            border-radius: 60px;
-            backdrop-filter: blur(3px);
-            letter-spacing: 1px;
+            border-radius: 50px;
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            letter-spacing: 0.5px;
             border: 1px solid white;
+            width: fit-content;
+            font-weight: 500;
         }
 
         /* animations */
         @keyframes softGlow {
-            0% { filter: drop-shadow(0 8px 6px rgba(220, 60, 80, 0.5)); transform: translateX(-50%) scale(1); }
-            100% { filter: drop-shadow(0 18px 20px rgba(200, 30, 70, 0.7)); transform: translateX(-50%) scale(1.08); }
+            0% { filter: drop-shadow(0 8px 6px rgba(210, 50, 70, 0.5)); transform: translateX(-50%) scale(1); }
+            100% { filter: drop-shadow(0 16px 16px rgba(200, 20, 60, 0.8)); transform: translateX(-50%) scale(1.05); }
         }
 
         @keyframes flyRose {
-            0% {
-                opacity: 0.8;
-                transform: translateY(0) rotate(0deg) scale(0.6);
-            }
-            20% {
-                opacity: 1;
-                transform: translateY(-20vh) rotate(20deg) scale(1.2);
-            }
-            80% {
-                opacity: 0.9;
-                transform: translateY(-70vh) rotate(180deg) scale(1);
-            }
-            100% {
-                opacity: 0;
-                transform: translateY(-100vh) rotate(240deg) scale(0.8);
-            }
+            0% { opacity: 0.8; transform: translateY(0) rotate(0deg) scale(0.5); }
+            20% { opacity: 1; transform: translateY(-18vh) rotate(15deg) scale(1.0); }
+            80% { opacity: 0.9; transform: translateY(-70vh) rotate(180deg) scale(1.1); }
+            100% { opacity: 0; transform: translateY(-100vh) rotate(240deg) scale(0.7); }
         }
 
-        .hidden-countdown {
-            display: none;
+        /* iPhone 14 specific optimization (390px wide) */
+        @media (max-width: 430px) {
+            .stage { width: 98%; padding: 16px 8px 28px; }
+            .envelope-wrapper { width: 240px; height: 175px; }
+            .heart-on-top { font-size: 48px; top: -15px; }
+            .center-countdown { width: 64px; height: 64px; font-size: 40px; border-width: 3px; }
+            .letter span { font-size: 1.3rem; padding: 10px 8px; }
+            .subtle { font-size: 1.2rem; padding: 6px 20px; }
+            .rose { font-size: 2rem; }
         }
 
-        /* responsiveness */
-        @media (max-width: 450px) {
-            .envelope-wrapper { width: 260px; height: 200px; }
-            .heart-on-top { font-size: 52px; top: -18px; }
-            .center-countdown { width: 58px; height: 58px; font-size: 34px; }
-            .letter { font-size: 1rem; }
+        /* even smaller screens (like SE) */
+        @media (max-width: 370px) {
+            .envelope-wrapper { width: 210px; height: 155px; }
+            .heart-on-top { font-size: 42px; top: -14px; }
+            .center-countdown { width: 56px; height: 56px; font-size: 34px; }
+            .letter span { font-size: 1.2rem; }
+        }
+
+        /* safe area for notched iPhones */
+        @supports (padding: max(0px)) {
+            body { padding-left: max(8px, env(safe-area-inset-left)); padding-right: max(8px, env(safe-area-inset-right)); }
         }
     </style>
-    <!-- google font for extra charm -->
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;600&display=swap" rel="stylesheet">
+    <!-- google font -->
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="stage">
         <div class="envelope-wrapper" id="envelopeContainer">
-            <!-- envelope body -->
             <div class="envelope"></div>
-            <!-- flap (upper part) -->
             <div class="flap" id="envelopeFlap"></div>
             
-            <!-- heart on top (without countdown) -->
+            <!-- heart on top (pure decoration) -->
             <div class="heart-on-top">❤️</div>
 
-            <!-- COUNTDOWN now placed in the center of envelope (visible on the body) -->
+            <!-- COUNTDOWN right at the center of envelope, big & bold -->
             <div class="center-countdown" id="countdownDisplay">5</div>
 
-            <!-- letter inside (hidden at first) -->
+            <!-- hidden letter appears later -->
             <div class="letter" id="loveLetter">
                 <span>💕 Happy Valentine's Day, <br> My Rakshya Maya 💕</span>
             </div>
         </div>
-        <div class="subtle" id="magicHint">🌹 the countdown will begin ... for you 🌹</div>
+        <div class="subtle" id="magicHint">🌹 countdown starts ... 🌹</div>
     </div>
 
-    <!-- container for flying roses (roses) -->
+    <!-- flying roses field -->
     <div class="rose-garden" id="roseGarden"></div>
 
     <script>
         (function() {
+            // Wait for everything to load, then start the magic automatically
             window.addEventListener('load', function() {
-                // references
+                // get elements
                 const flap = document.getElementById('envelopeFlap');
                 const letter = document.getElementById('loveLetter');
                 const countdownEl = document.getElementById('countdownDisplay');
@@ -285,97 +294,102 @@
                 let countdownInterval = null;
                 let rosesLaunched = false;
                 let flapOpened = false;
-                let letterShown = false;
 
-                // helper: create one flying rose
+                // === helper: create a single flying rose (mobile tuned) ===
                 function createRose() {
                     const rose = document.createElement('div');
                     rose.className = 'rose';
-                    const roses = ['🌹', '🥀', '🌺', '🌸', '🌷', '💐', '🌹', '🌹'];
+                    // romantic rose set
+                    const roses = ['🌹', '🌹', '🥀', '🌸', '🌷', '💐', '🌺'];
                     const randomRose = roses[Math.floor(Math.random() * roses.length)];
                     rose.textContent = randomRose;
 
+                    // random horizontal start (5% - 95%)
                     const left = Math.random() * 90 + 5;
                     rose.style.left = left + '%';
 
-                    const duration = Math.random() * 5 + 7;
+                    // duration between 6s and 10s (fits mobile view)
+                    const duration = Math.random() * 4 + 6; // 6-10s
                     rose.style.animation = `flyRose ${duration}s linear forwards`;
 
-                    const scale = 0.8 + Math.random() * 1.2;
+                    // random size but not too big
+                    const scale = 0.7 + Math.random() * 1.0;
                     rose.style.fontSize = (scale * 1.8) + 'rem';
 
-                    const delay = Math.random() * 2;
+                    // random delay (0-1.5s)
+                    const delay = Math.random() * 1.5;
                     rose.style.animationDelay = delay + 's';
 
                     roseGarden.appendChild(rose);
 
+                    // clean up after animation
                     setTimeout(() => {
                         if (rose.parentNode) rose.remove();
                     }, (duration + delay) * 1000);
                 }
 
-                // launch many roses
+                // === launch about 35 roses (perfect for mobile) ===
                 function launchRosesStorm() {
                     if (rosesLaunched) return;
                     rosesLaunched = true;
 
-                    const totalRoses = 42;
+                    const totalRoses = 35; // slightly less but still abundant
                     for (let i = 0; i < totalRoses; i++) {
                         setTimeout(() => {
                             createRose();
-                        }, i * 30);
+                        }, i * 35); // gentle burst
                     }
 
-                    hint.innerText = '✨ roses flying to you ... ✨';
+                    hint.innerText = '✨ roses fill the air ✨';
                 }
 
-                // open flap and show letter
+                // === open flap & reveal letter ===
                 function openEnvelopeAndShowLetter() {
                     if (!flapOpened) {
                         flap.classList.add('open');
                         flapOpened = true;
 
+                        // letter emerges after flap starts moving
                         setTimeout(() => {
                             letter.classList.add('show');
-                            letterShown = true;
-                            hint.innerText = '💌 for my dearest wife 💌';
+                            hint.innerText = '💌 my heart to you 💌';
                         }, 400);
                     }
                 }
 
-                // finish countdown: roses, then open envelope
+                // === countdown finished: roses, then envelope ===
                 function finishCountdown() {
                     if (countdownInterval) {
                         clearInterval(countdownInterval);
                         countdownInterval = null;
                     }
 
-                    // 1. roses fly
+                    // 1. roses take flight immediately
                     launchRosesStorm();
 
-                    // 2. open envelope after short pause
+                    // 2. after a short, sweet pause → open envelope
                     setTimeout(() => {
                         openEnvelopeAndShowLetter();
-                    }, 500);
+                    }, 500); // half sec later
 
-                    // gracefully hide countdown circle
+                    // gracefully hide countdown badge
                     if (countdownEl) {
                         countdownEl.style.transition = 'opacity 0.5s, transform 0.3s';
                         countdownEl.style.opacity = '0';
-                        countdownEl.style.transform = 'translate(-50%, -50%) scale(0.7)';
+                        countdownEl.style.transform = 'translate(-50%, -50%) scale(0.5)';
                         setTimeout(() => {
                             if (countdownEl) countdownEl.style.display = 'none';
                         }, 500);
                     }
                 }
 
-                // start countdown from 5 to 1
+                // === start countdown from 5 to 1 (mobile friendly visual) ===
                 function startCountdown() {
-                    if (countdownInterval) return;
+                    if (countdownInterval) return; // already running
 
                     countdown = 5;
                     countdownEl.textContent = countdown;
-                    countdownEl.style.display = 'flex'; // ensure visible
+                    countdownEl.style.display = 'flex';
                     countdownEl.style.opacity = '1';
                     countdownEl.style.transform = 'translate(-50%, -50%) scale(1)';
 
@@ -384,11 +398,11 @@
 
                         if (countdownEl) {
                             countdownEl.textContent = countdown > 0 ? countdown : '0';
-                            // little bounce
-                            countdownEl.style.transform = 'translate(-50%, -50%) scale(1.2)';
+                            // bounce effect (pleasing on mobile)
+                            countdownEl.style.transform = 'translate(-50%, -50%) scale(1.25)';
                             setTimeout(() => { 
                                 if(countdownEl) countdownEl.style.transform = 'translate(-50%, -50%) scale(1)'; 
-                            }, 120);
+                            }, 130);
                         }
 
                         if (countdown <= 0) {
@@ -396,32 +410,31 @@
                             countdownInterval = null;
                             finishCountdown();
                         }
-                    }, 1000);
+                    }, 1000); // every second
                 }
 
-                // start automatically after page load (with tiny delay)
+                // auto-start countdown a tiny moment after page load (mobile safari loves this)
                 setTimeout(() => {
                     startCountdown();
                 }, 200);
+
+                // optional: if user wants to tap envelope, it does nothing extra (automatic)
+                // but we keep the subtle hover effect (non intrusive)
             });
         })();
     </script>
 
-    <!-- small extra style -->
+    <!-- tiny extra style for letter on mobile -->
     <style>
+        /* ensure text wraps nicely */
         .letter span {
-            background: rgba(255, 235, 235, 0.8);
-            padding: 12px 14px;
-            border-radius: 40px 8px 40px 8px;
-            box-shadow: 0 2px 10px #fbc1c1;
-            font-size: 1.4rem;
+            white-space: pre-wrap;
+            word-break: break-word;
+            max-width: 98%;
         }
-        .envelope-wrapper:hover .flap:not(.open) {
-            transform: rotateX(10deg);
-        }
-        /* ensure countdown is visible above flap (higher z-index) */
-        .center-countdown {
-            z-index: 65;
+        /* disable any pull-to-refresh while interacting with envelope (optional) */
+        .envelope-wrapper {
+            touch-action: pan-y pinch-zoom;
         }
     </style>
 </body>
