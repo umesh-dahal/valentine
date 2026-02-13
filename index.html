@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🌹 for my Rakshya Maya · Valentine</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(145deg, #fad0c4 0%, #ff9a9e 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Dancing Script', 'Segoe Script', 'Brush Script MT', cursive, sans-serif;
+            overflow-x: hidden;
+            position: relative;
+            padding: 16px;
+        }
+
+        /* main card stage */
+        .stage {
+            width: min(680px, 98%);
+            background: rgba(255, 245, 240, 0.5);
+            backdrop-filter: blur(3px);
+            border-radius: 60px 60px 40px 40px;
+            box-shadow: 0 30px 40px rgba(180, 60, 80, 0.25);
+            padding: 30px 20px 50px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            z-index: 15;
+            border: 2px solid rgba(255, 255, 255, 0.7);
+        }
+
+        /* envelope container */
+        .envelope-wrapper {
+            position: relative;
+            width: 300px;
+            height: 220px;
+            margin: 10px auto 20px;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+            z-index: 30;
+        }
+
+        .envelope {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: #f9a29f;
+            border-radius: 20px 20px 12px 12px;
+            box-shadow: 0 15px 20px rgba(190, 70, 70, 0.4);
+            border: 3px solid #d66868;
+            overflow: hidden;
+            z-index: 20;
+        }
+
+        /* envelope flap (upper part) */
+        .flap {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 45%;
+            background: #feb6b0;
+            border-radius: 18px 18px 60% 60%;
+            border-bottom: 3px solid #d66868;
+            transform-origin: top;
+            transition: transform 0.8s cubic-bezier(0.42, 0.0, 0.28, 1.2);
+            z-index: 35;
+            box-shadow: inset 0 10px 12px rgba(250, 230, 230, 0.8);
+            backface-visibility: hidden;
+        }
+
+        .flap.open {
+            transform: rotateX(180deg);
+            pointer-events: none;
+        }
+
+        /* heart on top of envelope (remains purely decorative) */
+        .heart-on-top {
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 64px;
+            filter: drop-shadow(0 12px 10px rgba(200, 40, 60, 0.4));
+            z-index: 50;
+            animation: softGlow 1.8s infinite alternate;
+            line-height: 1;
+            pointer-events: none;
+        }
+
+        /* --- NEW: countdown placed at center of envelope (visible on the body) --- */
+        .center-countdown {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #ffecbb;
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 42px;
+            font-weight: bold;
+            color: #b13e4b;
+            box-shadow: 0 0 0 5px white, 0 8px 20px crimson;
+            border: 3px solid #ffe6b0;
+            z-index: 60;  /* above envelope, below flap? we want it visible on envelope body */
+            font-family: 'Courier New', monospace;
+            transition: transform 0.2s, opacity 0.4s;
+            /* it sits on the envelope body, but flap covers it when closed? 
+               flap has z-index 35, but .center-countdown 60 is higher, so it appears on top of flap.
+               That's good: timer visible above flap. */
+            pointer-events: none; /* so clicks pass through to envelope if needed */
+            backdrop-filter: blur(1px);
+            line-height: 1;
+        }
+
+        /* flying roses container */
+        .rose-garden {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 100;
+            overflow: hidden;
+        }
+
+        .rose {
+            position: absolute;
+            font-size: 2.2rem;
+            opacity: 0;
+            filter: drop-shadow(0 6px 10px hotpink);
+            animation: flyRose 8s linear forwards;
+            bottom: -10%;
+            will-change: transform, opacity;
+        }
+
+        /* letter inside envelope */
+        .letter {
+            position: absolute;
+            width: 86%;
+            height: 68%;
+            background: #fffef8;
+            left: 7%;
+            top: 16%;
+            border-radius: 16px 16px 12px 12px;
+            padding: 14px 8px;
+            box-shadow: inset 0 0 0 1px #f1bfbf, 0 12px 18px rgba(120, 40, 40, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            z-index: 25;
+            font-size: 1.1rem;
+            transform: scale(0.8) translateY(20px);
+            opacity: 0;
+            transition: transform 0.8s ease 0.3s, opacity 0.6s ease 0.2s;
+            font-family: 'Dancing Script', 'Georgia', cursive;
+            color: #a5314a;
+            border: 2px solid #ffb6b6;
+            transform-origin: bottom;
+            line-height: 1.4;
+            word-break: break-word;
+            backdrop-filter: blur(2px);
+        }
+
+        .letter.show {
+            transform: scale(1) translateY(0);
+            opacity: 1;
+        }
+
+        .letter span {
+            background: rgba(255, 220, 220, 0.3);
+            padding: 6px 12px;
+            border-radius: 60px;
+            display: inline-block;
+        }
+
+        /* instruction / romantic footer */
+        .subtle {
+            color: #7d4050;
+            margin-top: 25px;
+            font-size: 1.2rem;
+            text-shadow: 2px 2px 0 rgba(255, 255, 255, 0.5);
+            font-weight: lighter;
+            background: #ffeae4b8;
+            padding: 8px 24px;
+            border-radius: 60px;
+            backdrop-filter: blur(3px);
+            letter-spacing: 1px;
+            border: 1px solid white;
+        }
+
+        /* animations */
+        @keyframes softGlow {
+            0% { filter: drop-shadow(0 8px 6px rgba(220, 60, 80, 0.5)); transform: translateX(-50%) scale(1); }
+            100% { filter: drop-shadow(0 18px 20px rgba(200, 30, 70, 0.7)); transform: translateX(-50%) scale(1.08); }
+        }
+
+        @keyframes flyRose {
+            0% {
+                opacity: 0.8;
+                transform: translateY(0) rotate(0deg) scale(0.6);
+            }
+            20% {
+                opacity: 1;
+                transform: translateY(-20vh) rotate(20deg) scale(1.2);
+            }
+            80% {
+                opacity: 0.9;
+                transform: translateY(-70vh) rotate(180deg) scale(1);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-100vh) rotate(240deg) scale(0.8);
+            }
+        }
+
+        .hidden-countdown {
+            display: none;
+        }
+
+        /* responsiveness */
+        @media (max-width: 450px) {
+            .envelope-wrapper { width: 260px; height: 200px; }
+            .heart-on-top { font-size: 52px; top: -18px; }
+            .center-countdown { width: 58px; height: 58px; font-size: 34px; }
+            .letter { font-size: 1rem; }
+        }
+    </style>
+    <!-- google font for extra charm -->
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="stage">
+        <div class="envelope-wrapper" id="envelopeContainer">
+            <!-- envelope body -->
+            <div class="envelope"></div>
+            <!-- flap (upper part) -->
+            <div class="flap" id="envelopeFlap"></div>
+            
+            <!-- heart on top (without countdown) -->
+            <div class="heart-on-top">❤️</div>
+
+            <!-- COUNTDOWN now placed in the center of envelope (visible on the body) -->
+            <div class="center-countdown" id="countdownDisplay">5</div>
+
+            <!-- letter inside (hidden at first) -->
+            <div class="letter" id="loveLetter">
+                <span>💕 Happy Valentine's Day, <br> My Rakshya Maya 💕</span>
+            </div>
+        </div>
+        <div class="subtle" id="magicHint">🌹 the countdown will begin ... for you 🌹</div>
+    </div>
+
+    <!-- container for flying roses (roses) -->
+    <div class="rose-garden" id="roseGarden"></div>
+
+    <script>
+        (function() {
+            window.addEventListener('load', function() {
+                // references
+                const flap = document.getElementById('envelopeFlap');
+                const letter = document.getElementById('loveLetter');
+                const countdownEl = document.getElementById('countdownDisplay');
+                const roseGarden = document.getElementById('roseGarden');
+                const hint = document.getElementById('magicHint');
+
+                let countdown = 5;
+                let countdownInterval = null;
+                let rosesLaunched = false;
+                let flapOpened = false;
+                let letterShown = false;
+
+                // helper: create one flying rose
+                function createRose() {
+                    const rose = document.createElement('div');
+                    rose.className = 'rose';
+                    const roses = ['🌹', '🥀', '🌺', '🌸', '🌷', '💐', '🌹', '🌹'];
+                    const randomRose = roses[Math.floor(Math.random() * roses.length)];
+                    rose.textContent = randomRose;
+
+                    const left = Math.random() * 90 + 5;
+                    rose.style.left = left + '%';
+
+                    const duration = Math.random() * 5 + 7;
+                    rose.style.animation = `flyRose ${duration}s linear forwards`;
+
+                    const scale = 0.8 + Math.random() * 1.2;
+                    rose.style.fontSize = (scale * 1.8) + 'rem';
+
+                    const delay = Math.random() * 2;
+                    rose.style.animationDelay = delay + 's';
+
+                    roseGarden.appendChild(rose);
+
+                    setTimeout(() => {
+                        if (rose.parentNode) rose.remove();
+                    }, (duration + delay) * 1000);
+                }
+
+                // launch many roses
+                function launchRosesStorm() {
+                    if (rosesLaunched) return;
+                    rosesLaunched = true;
+
+                    const totalRoses = 42;
+                    for (let i = 0; i < totalRoses; i++) {
+                        setTimeout(() => {
+                            createRose();
+                        }, i * 30);
+                    }
+
+                    hint.innerText = '✨ roses flying to you ... ✨';
+                }
+
+                // open flap and show letter
+                function openEnvelopeAndShowLetter() {
+                    if (!flapOpened) {
+                        flap.classList.add('open');
+                        flapOpened = true;
+
+                        setTimeout(() => {
+                            letter.classList.add('show');
+                            letterShown = true;
+                            hint.innerText = '💌 for my dearest wife 💌';
+                        }, 400);
+                    }
+                }
+
+                // finish countdown: roses, then open envelope
+                function finishCountdown() {
+                    if (countdownInterval) {
+                        clearInterval(countdownInterval);
+                        countdownInterval = null;
+                    }
+
+                    // 1. roses fly
+                    launchRosesStorm();
+
+                    // 2. open envelope after short pause
+                    setTimeout(() => {
+                        openEnvelopeAndShowLetter();
+                    }, 500);
+
+                    // gracefully hide countdown circle
+                    if (countdownEl) {
+                        countdownEl.style.transition = 'opacity 0.5s, transform 0.3s';
+                        countdownEl.style.opacity = '0';
+                        countdownEl.style.transform = 'translate(-50%, -50%) scale(0.7)';
+                        setTimeout(() => {
+                            if (countdownEl) countdownEl.style.display = 'none';
+                        }, 500);
+                    }
+                }
+
+                // start countdown from 5 to 1
+                function startCountdown() {
+                    if (countdownInterval) return;
+
+                    countdown = 5;
+                    countdownEl.textContent = countdown;
+                    countdownEl.style.display = 'flex'; // ensure visible
+                    countdownEl.style.opacity = '1';
+                    countdownEl.style.transform = 'translate(-50%, -50%) scale(1)';
+
+                    countdownInterval = setInterval(() => {
+                        countdown -= 1;
+
+                        if (countdownEl) {
+                            countdownEl.textContent = countdown > 0 ? countdown : '0';
+                            // little bounce
+                            countdownEl.style.transform = 'translate(-50%, -50%) scale(1.2)';
+                            setTimeout(() => { 
+                                if(countdownEl) countdownEl.style.transform = 'translate(-50%, -50%) scale(1)'; 
+                            }, 120);
+                        }
+
+                        if (countdown <= 0) {
+                            clearInterval(countdownInterval);
+                            countdownInterval = null;
+                            finishCountdown();
+                        }
+                    }, 1000);
+                }
+
+                // start automatically after page load (with tiny delay)
+                setTimeout(() => {
+                    startCountdown();
+                }, 200);
+            });
+        })();
+    </script>
+
+    <!-- small extra style -->
+    <style>
+        .letter span {
+            background: rgba(255, 235, 235, 0.8);
+            padding: 12px 14px;
+            border-radius: 40px 8px 40px 8px;
+            box-shadow: 0 2px 10px #fbc1c1;
+            font-size: 1.4rem;
+        }
+        .envelope-wrapper:hover .flap:not(.open) {
+            transform: rotateX(10deg);
+        }
+        /* ensure countdown is visible above flap (higher z-index) */
+        .center-countdown {
+            z-index: 65;
+        }
+    </style>
+</body>
+</html>
